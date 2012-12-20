@@ -9,8 +9,8 @@
     <property name="lib.dir" value="${basedir}/lib"/>
     <property name="bin.dir" value="${basedir}/bin"/>
     <property file="${src.dir}/com/granule/config.properties"/>
-    <property name="jarfile" value="${build.dir}/${ant.project.name}${version}.jar"/>
-    <property name="distfile" value="${build.dir}/${ant.project.name}${version}.zip"/>
+    <property name="jarfile" value="${build.dir}/${ant.project.name}-${version}.jar"/>
+    <property name="distfile" value="${build.dir}/${ant.project.name}-${version}.zip"/>
     <property name="webinf" value="../jsp-demo/web/WEB-INF"/>
     
     <property name="target-jdk" value="1.5"/>
