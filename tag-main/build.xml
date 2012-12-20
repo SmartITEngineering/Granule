@@ -67,6 +67,7 @@
       <dependency groupId="org.slf4j" artifactId="slf4j-api" version="1.6.1" />
       <dependency groupId="org.slf4j" artifactId="slf4j-log4j12" version="1.6.1" />
       <dependency groupId="log4j" artifactId="log4j" version="1.2.16" />
+      <license name="The Apache Software License, Version 2.0" url="http://www.apache.org/licenses/LICENSE-2.0.txt" distribution="repo" />
     </artifact:pom>
     <artifact:writepom pomRefId="GranulePOM" file="${build.dir}/granule.xml"/>
     <artifact:pom id="GranulePOMFile" file="${build.dir}/granule.xml" />
