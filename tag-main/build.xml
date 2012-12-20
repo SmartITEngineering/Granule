@@ -71,11 +71,27 @@
     </artifact:pom>
     <artifact:writepom pomRefId="GranulePOM" file="${build.dir}/granule.xml"/>
     <artifact:pom id="GranulePOMFile" file="${build.dir}/granule.xml" />
-    <artifact:install file="${jarfile}">      
+    <artifact:install file="${jarfile}">
       <pom refid="GranulePOMFile" />
     </artifact:install>
   </target>
+
+  <target name="m2-deploy-snapshot" depends="test,jar">
+    <artifact:pom id="GranulePOMFile" file="${build.dir}/granule.xml" />
+    <artifact:deploy file="${jarfile}">
+      <remoteRepository url="file:/media/cb-smart-it-snapshot/" />
+      <pom refid="GranulePOMFile"/>
+    </artifact:deploy>
+  </target>
     
+  <target name="m2-deploy-release" depends="test,jar">
+    <artifact:pom id="GranulePOMFile" file="${build.dir}/granule.xml" />
+    <artifact:deploy file="${jarfile}">
+      <remoteRepository url="file:/media/cb-smart-it-release/" />
+      <pom refid="GranulePOMFile"/>
+    </artifact:deploy>
+  </target>
+
   <target name="dist" depends="test,jar">
     <zip destfile="${distfile}">
       <zipfileset dir="${webinf}" prefix="WEB-INF" includes="granule.properties"/>
