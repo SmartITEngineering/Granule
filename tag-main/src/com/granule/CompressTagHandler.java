@@ -90,7 +90,9 @@ public class CompressTagHandler {
                         boolean addFile = true;
                         Attributes attrs = e.getAttributes();
                         if (attrs.isValueExists("src")) {
-                            String src = attrs.getValue("src");
+                            // {{{ 02.09.2011 E.Abramovich - HTPBB-84: problem with jsessionid in granule
+                            String src = removeJSessionID(attrs.getValue("src"));
+                            // }}}
                             if (PathUtils.isWebAddress(src) || !PathUtils.isValidJs(src))
                                 throw new JSCompileException("Dynamic or remote scripts can not be combined. src="+src);
 
@@ -279,7 +281,9 @@ public class CompressTagHandler {
                         md = new MediaInfo();
                         mediae.put(media, md);
                     }
-                    String href = attrs.getValue("href");
+                    // {{{ 02.09.2011 E.Abramovich - HTPBB-84: problem with jsessionid in granule
+                    String href = removeJSessionID(attrs.getValue("href"));
+                    // }}}
                     if (PathUtils.isWebAddress(href) || !PathUtils.isValidCss(href))
                         throw new JSCompileException("Dynamic or remote stylesheets can not be combined. href="+href);
                     String path = PathUtils.calcPath(href, requestProxy, bp);
@@ -374,5 +378,24 @@ public class CompressTagHandler {
     }
     
     private static final Logger logger = LoggerFactory.getLogger(CompressTagHandler.class);
+
+    /**
+     * Tomcat can add "jsessionid" parameter to links sometimes. 
+     * It tries to track sessions with URL rewriting in some cases, even if 
+     * cookies are enabled.
+     *
+     * See  http://mail-archives.apache.org/mod_mbox/tomcat-users/200407.mbox/%3C4106C206.2020702@fiskars.com%3E
+     *
+     * We are removing this parameter from links to get names of CSS and JS files 
+     * to be included.
+     */
+    private String removeJSessionID(String href) {
+        int k = href.indexOf(";jsessionid=");
+        if (k>0) {
+            href = href.substring(0,k);
+            logger.warn("jsessionid removed from "+href);
+        }
+        return href;
+    }
 
 }
